@@ -33,10 +33,10 @@ variable "route_table_id" {
   default     = "rtb-08a6a402509fad8e5"  # Replace with your existing Route Table ID
 }
 
-#variable "key_name" {
- # description = "Name of the existing SSH key pair"
-  #default     = "an"  # Replace with your key pair name
-#}
+variable "key_name" {
+  description = "Name of the existing SSH key pair"
+  default     = "tests"  # Replace with your key pair name
+}
 
 # Launch  instance
 resource "aws_instance" "web" {
@@ -44,7 +44,7 @@ resource "aws_instance" "web" {
   instance_type = "t3.medium"
   subnet_id     = var.subnet_a_id
   security_groups = [var.security_group_instance_id]
-  # key_name       = var.key_name
+  key_name       = var.key_name
 
   # Note: We are not specifying a root_block_device configuration here as
   # we assume you will add the EBS volume via the AWS Console.
