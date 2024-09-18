@@ -39,7 +39,7 @@ variable "key_name" {
 }
 
 # Launch  instance
-resource "aws_instance" "web" {
+resource "aws_instance" "test-server" {
   ami           = "ami-037774efca2da0726"  # Replace with your desired ARM-compatible AMI ID
   instance_type = "t3.medium"
   subnet_id     = var.subnet_a_id
