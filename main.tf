@@ -1,7 +1,6 @@
 provider "aws" {
   region = "us-east-2"
 }
-
 # Variables for existing resources
 variable "vpc_id" {
   description = "ID of the existing VPC"
