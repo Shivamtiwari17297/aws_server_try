@@ -40,7 +40,7 @@ variable "key_name" {
 # Launch  instance
 resource "aws_instance" "server" {
   ami           = "ami-037774efca2da0726"  # Replace with your desired ARM-compatible AMI ID
-  instance_type = "t2.micro"
+  instance_type = "t3.micro"
   subnet_id     = var.subnet_a_id
   security_groups = [var.security_group_instance_id]
   key_name       = var.key_name
