@@ -48,6 +48,6 @@ root_block_device {
 
 }
 
-output "Prod-server" {                               ## Name change API or game.
-  value = aws_instance.Prod-server[*].public_ip      ## Name change API or game.
-}
+#output "Prod-server" {                               ## Name change API or game.
+ # value = aws_instance.Prod-server[*].public_ip      ## Name change API or game.
+#}
