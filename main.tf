@@ -12,7 +12,7 @@ vpc_security_group_ids = [
 
     ]
   associate_public_ip_address  = true
-key_name = "bigboss-pee"
+key_name = "emmi"
   count         = var.instance_count
  # count = 0
     user_data = <<-EOF
