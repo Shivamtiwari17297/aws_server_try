@@ -2,44 +2,40 @@
 
 # Update system
 echo "Updating system..."
-sudo yum update -y
+sudo apt update -y && sudo apt upgrade -y
 
 # Install Java
 echo "Installing Java..."
-sudo yum install -y java-1.8.0-openjdk
+sudo apt install -y openjdk-8-jdk
 
 # Install Redis
 echo "Installing Redis..."
-sudo yum install -y redis
-sudo systemctl enable redis
-sudo systemctl start redis
+sudo apt install -y redis-server
+sudo systemctl enable redis-server
+sudo systemctl start redis-server
 
 # Install Filebeat
 echo "Installing Filebeat..."
-sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
-cat <<EOF | sudo tee /etc/yum.repos.d/elastic-7.x.repo
-[elastic-7.x]
-name=Elastic repository for 7.x packages
-baseurl=https://artifacts.elastic.co/packages/7.x/yum
-gpgcheck=1
-enabled=1
-gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
-EOF
-sudo yum install -y filebeat
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+sudo sh -c 'echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" > /etc/apt/sources.list.d/elastic-7.x.list'
+sudo apt update -y
+sudo apt install -y filebeat
 sudo systemctl enable filebeat
 sudo systemctl start filebeat
 
 # Install MySQL 8.0
 echo "Installing MySQL 8.0..."
-sudo yum localinstall -y https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
-sudo yum install -y mysql-community-server
-sudo systemctl enable mysqld
-sudo systemctl start mysqld
+wget https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb
+sudo dpkg -i mysql-apt-config_0.8.22-1_all.deb
+sudo apt update -y
+sudo apt install -y mysql-server
+sudo systemctl enable mysql
+sudo systemctl start mysql
 
 # Check installed services status
 echo "Checking installed services status..."
-sudo systemctl status redis
+sudo systemctl status redis-server
 sudo systemctl status filebeat
-sudo systemctl status mysqld
+sudo systemctl status mysql
 
 echo "Script execution completed."
