@@ -2,15 +2,15 @@
 
 # Update system
 echo "Updating system..."
-sudo dnf update -y
+sudo yum update -y
 
 # Install Java
 echo "Installing Java..."
-sudo dnf install -y java-11-openjdk
+sudo amazon-linux-extras install java-openjdk11 -y
 
 # Install Redis
 echo "Installing Redis..."
-sudo dnf install -y redis
+sudo yum install -y redis
 sudo systemctl enable redis
 sudo systemctl start redis
 
@@ -24,14 +24,14 @@ gpgcheck=1
 enabled=1
 gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
 EOL
-sudo dnf install -y filebeat
+sudo yum install -y filebeat
 sudo systemctl enable filebeat
 sudo systemctl start filebeat
 
 # Install MySQL 8.0
 echo "Installing MySQL 8.0..."
-sudo dnf install -y https://dev.mysql.com/get/mysql80-community-release-el8-3.noarch.rpm
-sudo dnf install -y mysql-community-server
+sudo yum install -y https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+sudo yum install -y mysql-community-server
 sudo systemctl enable mysqld
 sudo systemctl start mysqld
 
