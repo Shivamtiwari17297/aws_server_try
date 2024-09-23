@@ -1,36 +1,36 @@
 #!/bin/bash
 
-# Update the system
+# Update system
 echo "Updating system..."
 sudo dnf update -y
 
-# Install Java (OpenJDK 11)
+# Install Java
 echo "Installing Java..."
-sudo dnf install java-11-openjdk -y
+sudo dnf install -y java-1.8.0-openjdk
 
 # Install Redis
 echo "Installing Redis..."
-sudo dnf install redis -y
+sudo dnf install -y redis
 sudo systemctl enable redis
 sudo systemctl start redis
 
 # Install Filebeat
 echo "Installing Filebeat..."
-sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
-sudo dnf install https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.16.2-x86_64.rpm -y
-
-# Enable and start Filebeat
+sudo dnf install -y filebeat
 sudo systemctl enable filebeat
 sudo systemctl start filebeat
 
 # Install MySQL 8.0
 echo "Installing MySQL 8.0..."
-sudo dnf install mysql-server -y
-sudo systemctl start mysqld
+sudo dnf install -y https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+sudo dnf install -y mysql-community-server
 sudo systemctl enable mysqld
+sudo systemctl start mysqld
 
-# Check installed services
+# Check installed services status
 echo "Checking installed services status..."
-sudo systemctl status mysqld redis filebeat
+sudo systemctl status redis
+sudo systemctl status filebeat
+sudo systemctl status mysqld
 
 echo "Script execution completed."
