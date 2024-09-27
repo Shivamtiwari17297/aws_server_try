@@ -2,11 +2,11 @@
 
 # Create an AWS EC2 instance
 resource "aws_instance" "Prod-server" {                                                  # Prod-Singapore-Prod-API
-  ami                          = "ami-08718895af4dfa033"  # Replace with your desired AMI ID
+  ami                          = "ami-0ebfd941bbafe70c6"  # Replace with your desired AMI ID
   instance_type                =  var.instance_type        # Replace with your desired instance type
-  subnet_id                    ="subnet-0d4f7782aa963e139" # Avialibility Zone ap-southeast-1
+  subnet_id                    ="subnet-075f8de18e999dcad" # Avialibility Zone ap-southeast-1
 vpc_security_group_ids = [
-    "sg-0bbc16fd865554ca4",
+    "sg-0cba5ff6fb7a80237",
     # "sg-06ef6aef694c0f34e"    ## API and game dono me 2nd wala alag hai
 
 
@@ -36,13 +36,13 @@ tags = {
 
 root_block_device {
     volume_size = var.root_volume_size  # Replace with your desired root volume size in GB
-    volume_type = "gp2"  # Replace with your desired root volume type
+    volume_type = "gp3"  # Replace with your desired root volume type
   }
 
 
   # iam_instance_profile = "aws-ec2-prod-role"
 # Enable termination protection and stop protection
-  disable_api_termination = true
+  #disable_api_termination = true
 
 
 
