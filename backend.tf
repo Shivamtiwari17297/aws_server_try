@@ -1,8 +1,8 @@
 # backend.tf
 terraform {
     backend "s3" {
-        bucket = "sdsddd"
+        bucket = "sswsa"
         key    =" prod-global/game-server"   ## Name change API or game.
-        region = "ap-south-1"
+        region = "us-east-1"
     }
 }
