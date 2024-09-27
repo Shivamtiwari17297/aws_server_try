@@ -1,43 +1,51 @@
-name: Terraform Deployment
+name: Run Terraform and Script on Server
 
 on:
   push:
     branches:
-      - main
+      - main  # Trigger on push to the main branch
 
 jobs:
-  terraform:
+  deploy:
     runs-on: ubuntu-latest
 
-    # Set AWS credential
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # Step 1: Checkout the repository to get Terraform files
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.0
+    # Step 2: Set up Terraform
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.9.6  # Specify your Terraform version
 
-      - name: Terraform Init
-        run: terraform init
+    # Step 3: Terraform initialization and execution
+    - name: Initialize Terraform
+      run: terraform init
 
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -out=tfplan
+    - name: Validate Terraform configuration
+      run: terraform validate
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+    - name: Plan Terraform deployment
+      run: terraform plan -out=tfplan
 
-      - name: Get Instance IP
-        id: get-instance-ip
-        run: echo "::set-output name=instance_ip::$(terraform output -raw instance_ip)"
+    - name: Apply Terraform configuration
+      run: terraform apply -auto-approve tfplan
 
-      - name: Run Deployment Script
-        run: |
-          chmod +x scripts/deploy.sh
-          ./scripts/deploy.sh ${{ steps.get-instance-ip.outputs.instance_ip }}
+    # Step 4: Wait for the server to be ready (optional but recommended)
+    # This step ensures Terraform has finished creating the server and the server is ready for SSH
+    
+    #- name: Wait for server to be ready
+     # run: sleep 60  # Adjust this based on how long your server takes to be ready
+
+    # Step 5: Run the script on the server via SSH
+    - name: Run script on server via SSH
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}  # Server IP stored in GitHub secrets
+        username: ${{ secrets.SERVER_USER }}  # SSH user (e.g., ec2-user) stored in secrets
+        key: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH private key stored in secrets
+        script: |
+          cd /root  # Navigate to the script location on the server
+          ./install_python3_8_amazon_linux_2023.sh  # Run your custom script
